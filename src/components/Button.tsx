@@ -1,15 +1,33 @@
-import styles from "./Button.module.css"
+import { useState } from "react";
+import produce from "immer";
 
-interface Props {
-    children: string;
-    color?: 'primary' | 'secondary' | 'danger' | 'success';
-    onClick: () => void;
-}
+const Button = () => {
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "Bug 1", fixed: false },
+    { id: 2, title: "Bug 2", fixed: false },
+  ]);
 
-const Button = ({children, onClick, color = 'primary'}: Props) => {
+  const handleClick = () => {
+    //setBugs(bugs.map(bug => bug.id === 1 ? {...bug,fixed:true} : bug))
+
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      })
+    );
+
+    console.log(bugs);
+  };
+
   return (
-    <button type="button" className={[styles.btn, styles['btn-' + color]].join(' ')} onClick={onClick}>{children}</button>
-  )
-}
+    <div>
+      {bugs.map(bug => <p key={bug.id}>{bug.title} {bug.fixed ? 'Fixed' : 'New'}</p>)}
+      <button type="button" onClick={handleClick}>
+        clickMe2
+      </button>
+    </div>
+  );
+};
 
-export default Button
+export default Button;
