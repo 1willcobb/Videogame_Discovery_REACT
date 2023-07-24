@@ -1,0 +1,12 @@
+.fill {
+    color: red;
+}
+
+.size {
+    width: 50px;
+    height: 50px;
+}
+
+.btnClean {
+    all: unset;
+}
