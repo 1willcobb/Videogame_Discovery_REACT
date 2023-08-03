@@ -8,6 +8,8 @@ import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
 import Option2 from "./components/Option2";
+import Form from "./components/Form";
+import Form2 from "./components/Form2";
 
 function App() {
   const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
@@ -51,23 +53,8 @@ function App() {
 
   return (
     <div>
-      <Like onClick={() => console.log("liked")} />
-      <Message />
-      <Message />
-      <Message />
-      <br />
-      <Button />
-      <br />
-      <NavBar cartItemsCount={cartItems.length} />
-      <Cart cartItems={cartItems} onClear={() => setCartItems([])} />
-      <ExpandableText >llentesque. Eget
-        velit aliquet sagittis id consectetur. Ornare suspendisse sed nisi lacus
-        sed viverra tellus in hac. Magna fringilla urna porttitor rhoncus dolor
-        purus non enim praesent. Laoreet suspendisse interdum consectetur libero
-        id. Purus sit amet luctus venenatis. Massa massa ultricies mi quis
-        hen
-      </ExpandableText>
-      <Option2 >Hey Will</Option2>
+      <Form/>
+      <Form2/>
     </div>
   );
 }

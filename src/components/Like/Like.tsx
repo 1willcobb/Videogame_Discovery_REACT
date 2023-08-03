@@ -2,6 +2,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import styles from "./Like.module.css";
 import { useState } from "react";
 
+
 interface Props {
   onClick: () => void;
 }
