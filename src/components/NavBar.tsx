@@ -1,12 +1,12 @@
 import React from 'react'
 
 interface Props {
-  cartItemsCount = 
+  cartItemsCount: number
 }
 
-const NavBar = () => {
+const NavBar = ({cartItemsCount}: Props) => {
   return (
-    <div>Navbar</div>
+    <div>Navbar: {cartItemsCount}</div>
   )
 }
 
