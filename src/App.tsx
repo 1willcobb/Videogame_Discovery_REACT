@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Alert from "./components/Alert";
-import Button from "./components/Button";
+import Button from "@mui/material/Button";
 import ListGroup from "./components/ListGroup";
 import Like from "./components/Like/Like";
 import Message from "./components/Message";
@@ -12,36 +12,18 @@ import Form from "./components/Form";
 import Form2 from "./components/Form2";
 import Form3 from "./components/Form3";
 import ProductList from "./components/ProductList";
-import apiClient, { CanceledError } from "./services/api-client";
+import { CanceledError } from "./services/api-client";
 import userService, { User } from "./services/user-service";
+import useUsers from "./hooks/useUsers";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState("");
-  const [Loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const { request, cancel } = userService.getAllUsers();
-    request
-      .then((res) => {
-        setUsers(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        setError(err.message);
-        setLoading(false);
-      });
-
-    return () => cancel();
-  }, []);
+  const { users, error, isLoading, setUsers, setError } = useUsers();
 
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
 
-    userService.deleteUser(user.id).catch((err) => {
+    userService.delete(user.id).catch((err) => {
       setError(err.message);
       setUsers(originalUsers);
     });
@@ -53,7 +35,7 @@ function App() {
     setUsers([newUser, ...users]);
 
     userService
-      .addUser(newUser)
+      .create(newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {
         setError(err.message);
@@ -66,7 +48,7 @@ function App() {
     const updatedUser = { ...user, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    userService.updateUser(updatedUser).catch((err) => {
+    userService.update(updatedUser).catch((err) => {
       setError(err.message);
       setUsers(originalUsers);
     });
@@ -75,7 +57,7 @@ function App() {
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
-      {Loading && <div className="spinner-boarder"></div>}
+      {isLoading && <div className="spinner-boarder"></div>}
 
       <button className="btn btn-primary mb-3" onClick={addUser}>
         Add
@@ -96,7 +78,7 @@ function App() {
                 update
               </button>
               <button
-                className="btn btn-outline-danger"
+                className="btn btn-outline-info"
                 onClick={() => deleteUser(user)}
               >
                 delete
